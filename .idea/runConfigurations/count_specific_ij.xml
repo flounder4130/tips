@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="count specific ij" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="flounder.TipTool" />
+    <module name="tips" />
+    <option name="PROGRAM_PARAMETERS" value="count specific ij" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
