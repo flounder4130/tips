@@ -17,7 +17,7 @@ public class TipTool {
         }
         Strategy strategy = new AnnotationStrategy();
         Serializer serializer = new Persister(strategy);
-        File source = new File("../Tips_of_the_Day.xml");
+        File source = new File("./Tips_of_the_Day.xml");
         Topic topic = serializer.read(Topic.class, source);
 
         switch (args[0]) {
