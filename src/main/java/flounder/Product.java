@@ -1,8 +1,7 @@
 package flounder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public enum Product {
     IJ("Intellij IDEA "),
@@ -35,33 +34,19 @@ public enum Product {
 
     private String name;
 
-    Product(String name){
+    Product(String name) {
         this.name = name;
     }
 
     static List<Product> parseProducts(String in) {
-        if (in==null) return new ArrayList<>();
-        List<Product> out = new ArrayList<>();
-        String[] products = in.split("\\s*,\\s*");
-        if (in.startsWith("!")) {
-            ArrayList<Product> remaining = new ArrayList<>(Arrays.asList(Product.values()));
-            for (Product p : Product.values()) {
-                for (String s : products) {
-                    if (s.equals("")) continue;
-                    if (s.toUpperCase().equals(p.toString())) remaining.remove(p);
-                }
-            }
-            out = remaining;
-        } else {
-            for (String s : products) {
-                if (s.equals("")) continue;
-                out.add(Product.valueOf(s.toUpperCase()));
-            }
-        }
-        return out;
+        if (in == null) return Collections.emptyList();
+        boolean negation = in.startsWith("!");
+        Set<String> filterSet = new HashSet<>(Arrays.asList((negation ? in.substring(1) : in).toUpperCase().split("\\W+")));
+        return Arrays.stream(values())
+                .filter(product -> negation != filterSet.contains(product.toString()))
+                .collect(Collectors.toList());
     }
 
-    @SuppressWarnings("unused")
     public String getName() {
         return name;
     }

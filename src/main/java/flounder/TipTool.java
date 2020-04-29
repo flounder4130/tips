@@ -61,7 +61,7 @@ public class TipTool {
             case "similarity":
                 int threshold = 10;
                 if (args.length > 1) threshold = Integer.parseInt(args[1]);
-                ArrayList<Similarity> list = new ArrayList<>();
+                List<Similarity> list = new ArrayList<>();
                 for (int tip1 = 0; tip1 < topic.getTips().size(); tip1++) {
                     for (int tip2 = tip1 + 1; tip2 < topic.getTips().size(); tip2++) {
                         Similarity s = new Similarity(topic.getTips().get(tip1), topic.getTips().get(tip2));

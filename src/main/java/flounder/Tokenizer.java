@@ -1,74 +1,71 @@
 package flounder;
 
 import opennlp.tools.stemmer.PorterStemmer;
+
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Tokenizer {
 
+    private static final Pattern NO_TAGS = Pattern.compile("<[/]?.*?>");
+    private static final Pattern WORDS = Pattern.compile("\\W+");
+    private static final PorterStemmer STEMMER = new PorterStemmer();
+    
     public static Set<String> tokenizeAndStem(String in) {
-        PorterStemmer stemmer = new PorterStemmer();
-        String temp = in.replaceAll("<[/]?.*?>", " ");
-        temp = temp.replaceAll("\n", "");
-        temp = temp.replaceAll("\t", "");
-        return Arrays.stream(temp.split(" "))
-                .filter(s -> !(s.endsWith(".")||s.endsWith(",")))
-                .filter(s -> !s.equals(""))
+        return Arrays.stream(WORDS.split(NO_TAGS.matcher(in).replaceAll(" ")))
                 .filter(s -> !toRemove.contains(s.toLowerCase()))
-                .map(stemmer::stem)
+                .map(STEMMER::stem)
                 .collect(Collectors.toSet());
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    static ArrayList<String> toRemove = new ArrayList(){{
-        add("of");
-        add("a");
-        add("an");
-        add("on");
-        add("to");
-        add("with");
-        add("by");
-        add("click");
-        add("the");
-        add("in");
-        add("be");
-        add("of");
-        add("and");
-        add("for");
-        add("not");
-        add("as");
-        add("you");
-        add("do");
-        add("at");
-        add("this");
-        add("that");
-        add("but");
-        add("by");
-        add("from");
-        add("or");
-        add("will");
-        add("would");
-        add("out");
-        add("if");
-        add("about");
-        add("get");
-        add("which");
-        add("click");
-        add("when");
-        add("can");
-        add("like");
-        add("you");
-        add("know");
-        add("into");
-        add("your");
-        add("any");
-        add("all");
-        add("it");
-        add("|");
-        add("open");
-        add("press");
-    }};
-
+    static List<String> toRemove = Arrays.asList(
+            "of",
+            "a",
+            "an",
+            "on",
+            "to",
+            "with",
+            "by",
+            "click",
+            "the",
+            "in",
+            "be",
+            "of",
+            "and",
+            "for",
+            "not",
+            "as",
+            "you",
+            "do",
+            "at",
+            "this",
+            "that",
+            "but",
+            "by",
+            "from",
+            "or",
+            "will",
+            "would",
+            "out",
+            "if",
+            "about",
+            "get",
+            "which",
+            "click",
+            "when",
+            "can",
+            "like",
+            "you",
+            "know",
+            "into",
+            "your",
+            "any",
+            "all",
+            "it",
+            "|",
+            "open",
+            "press");
 
 }
 

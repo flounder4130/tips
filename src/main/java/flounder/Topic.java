@@ -11,13 +11,11 @@ import java.util.stream.Collectors;
 @Root(strict = false, name = "topic")
 public class Topic {
 
-    Predicate<TipOfTheDay> multipleProduct = tip -> !(tip.getProducts().size() == 1);
+    Predicate<TipOfTheDay> multipleProduct = tip -> 1 != tip.getProducts().size();
 
-    @SuppressWarnings("unused")
     @ElementList(inline = true, entry = "tip-of-the-day")
     private List<TipOfTheDay> tips;
 
-    @SuppressWarnings("unused") // required for deserialization
     public Topic() {
     }
 
@@ -32,7 +30,7 @@ public class Topic {
     public List<TipOfTheDay> getByProduct(Product product) {
         return tips.stream()
                 .filter(tip -> tip.getProducts().contains(product))
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toList());
     }
 
     public List<TipOfTheDay> getSpecificForProduct(Product product) {
@@ -51,5 +49,18 @@ public class Topic {
 
     public int getNumByProduct(String product) {
         return getNumByProduct(Product.valueOf(product.toUpperCase()));
+    }
+
+    public List<String> getDuplicateIds() {
+        List<String> out = new ArrayList<>();
+        for (int tip1 = 0; tip1 < tips.size(); tip1++) {
+            for (int tip2 = tip1 + 1; tip2 < tips.size(); tip2++) {
+                String id1 = tips.get(tip1).getId();
+                if (id1 == null) continue;
+                String id2 = tips.get(tip2).getId();
+                if (id1.equals(id2) && !out.contains(id1)) out.add(tips.get(tip2).getId());
+            }
+        }
+        return out;
     }
 }

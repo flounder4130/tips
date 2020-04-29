@@ -59,7 +59,7 @@ public class TipOfTheDay {
         this.productString = productString;
     }
 
-    private String getId() {
+    String getId() {
         return id;
     }
 
